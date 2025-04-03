@@ -9,11 +9,19 @@ jobs:
         run: touch demo.txt
       - name: step2
         run: echo "Hello World!" > demo.txt    
-        
+      - name: Upload math result for job 1        
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-job1
+          path: demo.txt
   job2:
     name: My Second job
     runs-on: ubuntu-latest
     needs: job1
     steps:
-      - name: step1
+      - name: Download math result for job 1
+        uses: actions/download-artifact@v4
+        with:
+          name: results-job1
+      - name: show content of job1 file
         run: cat demo.txt        
