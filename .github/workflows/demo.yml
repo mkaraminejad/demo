@@ -17,7 +17,6 @@ jobs:
   job2:
     name: My Second job
     runs-on: ubuntu-latest
-    needs: job1
     steps:
       - name: Download math result for job 1
         uses: actions/download-artifact@v4
@@ -31,18 +30,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: job1
     steps:
-      - name: Checkout Repo
+      - name: Checkout Repository
         uses: actions/checkout@v4
-        
-      - name: Decode kubeconfig secret
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v3        
+      - name: kubeconfig secret
         run: |
           echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > kubeconfig
           chmod 600 kubeconfig
           
-      - name: Kubectl
-        uses: actions-hub/kubectl@1.14.3
-        env:
-         KUBE_CONFIG: ${{ secrets.KUBECONFIG_B64 }}
-        with:
-          args: get pods
+      - name: Deploy to K8S
+        run: |
+          kubectl apply -f k8s/mypod.yaml
         
