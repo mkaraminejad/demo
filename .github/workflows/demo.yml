@@ -39,12 +39,9 @@ jobs:
       - name: kubeconfig Config
         run: |
           mkdir ${HOME}/.kube
-          echo $ {{ secrets.KUBE_CONFIG }} | base64 --decode > ${HOME}/.kube/config
-          cat ${HOME}/.kube/config
-      - name: Use Context
-        run: kubectl config use-context  cicd-context
-      - name: Deploy to K8s
-        run: kubectl apply -f k8s/mypod.yaml   
+          ls -latr ${HOME}/.kube
+          echo $ {{ secrets.KUBE_CONFIG }} | base64 -d > ${HOME}/.kube/config
+  
 
 
         
