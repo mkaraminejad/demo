@@ -34,11 +34,15 @@ jobs:
         uses: actions/checkout@v4
       - name: Install kubectl
         uses: azure/setup-kubectl@v3        
-      - name: kubeconfig secret
+        
+      - name: kubeconfig Config
+        uses: azure/k8s-set-context@v3
+        with:
+         kubeconfig: ${{ secrets.KUBECONFIG_B64 }}  
+      - name: kubeconfig Config
         run: |
-          echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > kubeconfig
-          chmod 600 kubeconfig
-          kubectl config view
-          kubectl cluster-info
+         chmod 600 kubeconfig
+         kubectl config view
+         kubectl cluster-info
 
         
