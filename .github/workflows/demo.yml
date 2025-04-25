@@ -38,8 +38,7 @@ jobs:
         run: |
           echo "${{ secrets.KUBECONFIG_B64 }}" | base64 -d > kubeconfig
           chmod 600 kubeconfig
-          
-      - name: Deploy to K8S
-        run: |
-          kubectl apply -f k8s/mypod.yaml
+          kubectl config view
+          kubectl cluster-info
+
         
